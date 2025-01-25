@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  primary1:
+    image: mysql/mysql-server:latest
+    container_name: primary1
+    hostname: primary1
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=master
+      - MYSQL_USER=master
+      - MYSQL_PASSWORD=123456
+    command: ["mysqld",
+      "--bind-address=0.0.0.0",
+      "--server-id=1",
+      "--log-bin=mysql-bin-1.log",
+      "--enforce-gtid-consistency=ON",
+      "--log-slave-updates=ON",
+      "--gtid-mode=ON",
+      "--transaction-write-set-extraction=XXHASH64",
+      "--binlog-checksum=NONE",
+      "--master-info-repository=TABLE",
+      "--relay-log-info-repository=TABLE",
+      "--plugin-load=group_replication.so",
+      "--relay-log-recovery=ON",
+      "--loose-group-replication-start-on-boot=OFF",
+      "--loose-group-replication-group-name=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "--loose-group-replication-local-address=primary1:6606",
+      "--loose-group-replication-group-seeds=primary1:6606,primary2:6606,primary3:6606",
+      "--loose-group-replication-single-primary-mode=OFF",
+      "--loose-group-replication-enforce-update-everywhere-checks=OFF"]
+
+  primary2:
+    image: mysql/mysql-server:latest
+    container_name: primary2
+    hostname: primary2
+    ports:
+      - "3308:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=master
+      - MYSQL_USER=master
+      - MYSQL_PASSWORD=123456
+    command: ["mysqld",
+      "--bind-address=0.0.0.0",
+      "--server-id=2",
+      "--log-bin=mysql-bin-1.log",
+      "--enforce-gtid-consistency=ON",
+      "--log-slave-updates=ON",
+      "--gtid-mode=ON",
+      "--transaction-write-set-extraction=XXHASH64",
+      "--binlog-checksum=NONE",
+      "--master-info-repository=TABLE",
+      "--relay-log-info-repository=TABLE",
+      "--plugin-load=group_replication.so",
+      "--relay-log-recovery=ON",
+      "--loose-group-replication-start-on-boot=OFF",
+      "--loose-group-replication-group-name=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "--loose-group-replication-local-address=primary2:6606",
+      "--loose-group-replication-group-seeds=primary1:6606,primary2:6606,primary3:6606",
+      "--loose-group-replication-single-primary-mode=OFF",
+      "--loose-group-replication-enforce-update-everywhere-checks=OFF"]
+
+  primary3:
+    image: mysql/mysql-server:latest
+    container_name: primary3
+    hostname: primary3
+    ports:
+      - "3309:3306"
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=master
+      - MYSQL_USER=master
+      - MYSQL_PASSWORD=123456
+    command: ["mysqld",
+      "--bind-address=0.0.0.0",
+      "--server-id=3",
+      "--log-bin=mysql-bin-1.log",
+      "--enforce-gtid-consistency=ON",
+      "--log-slave-updates=ON",
+      "--gtid-mode=ON",
+      "--transaction-write-set-extraction=XXHASH64",
+      "--binlog-checksum=NONE",
+      "--master-info-repository=TABLE",
+      "--relay-log-info-repository=TABLE",
+      "--plugin-load=group_replication.so",
+      "--relay-log-recovery=ON",
+      "--loose-group-replication-start-on-boot=OFF",
+      "--loose-group-replication-group-name=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "--loose-group-replication-local-address=primary3:6606",
+      "--loose-group-replication-group-seeds=primary1:6606,primary2:6606,primary3:6606",
+      "--loose-group-replication-single-primary-mode=OFF",
+      "--loose-group-replication-enforce-update-everywhere-checks=OFF"]
+
+networks:
+  mysql-primary_default:
+    driver: bridge
+
+
